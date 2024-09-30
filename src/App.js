@@ -5,7 +5,7 @@ import {
   UsersIcon,
 } from '@heroicons/react/24/outline'
 import Image from 'next/image'
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 const AuthContext = createContext(true)
 
@@ -23,10 +23,13 @@ export default function Header() {
 }
 
 function Links() {
+  const isAuthenticated=useContext(AuthContext)
+
+
   const authLinks = [
     { name: 'Dashboard', href: '#', icon: HomeIcon, count: '5', current: true },
     { name: 'Team', href: '#', icon: UsersIcon, current: false },
-    {
+        {
       name: 'Projects',
       href: '#',
       icon: FolderIcon,
@@ -42,11 +45,13 @@ function Links() {
       current: false,
     },
   ]
+  
+  const linksToShow = isAuthenticated ? authLinks : unAuthLinks;
 
   return (
     <li>
       <ul role='list' className='-mx-2 space-y-1'>
-        {unAuthLinks.map((item) => (
+        {linksToShow.map((item) => (
           <li key={item.name}>
             <a
               href={item.href}
